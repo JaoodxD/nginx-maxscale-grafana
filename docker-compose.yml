@@ -18,3 +18,17 @@ services:
     depends_on:
       - fastify-server-1
       - fastify-server-2
+
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: examplepassword
+      MYSQL_DATABASE: yourdatabase
+      MYSQL_USER: youruser
+      MYSQL_PASSWORD: yourpassword
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+volumes:
+  mariadb-data:
