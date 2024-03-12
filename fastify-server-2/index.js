@@ -5,9 +5,16 @@ const port = process.env.port || 3001
 
 const app = Fastify()
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
+  let data = null
+  try {
+    const response = await fetch('http://fastify-server-1:3000')
+    data = await response.text()
+  } catch (error) {
+    console.error(error)
+  }
   console.log(`handling request on port ${port}`)
-  res.send({ hello: 'world' })
+  res.send({ hello: 'world', data })
 })
 
 start()
