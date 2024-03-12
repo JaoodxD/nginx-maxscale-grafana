@@ -1,0 +1,27 @@
+[maxscale]
+admin_secure_gui=false
+threads=1
+
+# this enables external access to the REST API outside of localhost
+# please review / modify for any public / non development environments
+admin_host=0.0.0.0
+
+# Define the server for MariaDB
+[server1]
+type=server
+address=mariadb   # Use the service name of your MariaDB container
+port=3306
+protocol=MySQLBackend
+
+# Define a service for MariaDB
+[service1]
+type=service
+router=readwritesplit
+servers=server1
+
+# Define a listener for MariaDB service
+[listener1]
+type=listener
+service=service1
+protocol=MySQLClient
+port=3306
