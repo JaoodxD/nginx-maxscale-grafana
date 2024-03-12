@@ -34,5 +34,16 @@ services:
     volumes:
       - mariadb-data:/var/lib/mysql
 
+  # mariadb-maxscale:
+  #   build: ./maxscale
+  #   ports:
+  #     - "3306:3306"
+  #     - "8989:8989"
+  #   depends_on:
+  #     - mariadb
+  #   volumes:
+  #     - maxscale-data:/var/lib/maxscale
+
 volumes:
   mariadb-data:
+  # maxscale-data:
