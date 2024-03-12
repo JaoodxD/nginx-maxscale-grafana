@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  fastify-server-1:
+    build: ./fastify-server-1
+    ports:
+      - "3000:3000"
+
+  fastify-server-2:
+    build: ./fastify-server-2
+    ports:
+      - "3001:3001"
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - fastify-server-1
+      - fastify-server-2
