@@ -1,7 +1,15 @@
 version: '3.8'
 
+x-env: &env
+  environment:
+    MYSQL_ROOT_PASSWORD: examplepassword
+    MYSQL_DATABASE: yourdatabase
+    MYSQL_USER: youruser
+    MYSQL_PASSWORD: yourpassword
+
 services:
   fastify-server-1:
+    <<: *env
     build: ./fastify-server-1
     ports:
       - "3000:3000"
@@ -20,13 +28,9 @@ services:
       - fastify-server-2
 
   mariadb:
+    <<: *env
     image: mariadb
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: examplepassword
-      MYSQL_DATABASE: yourdatabase
-      MYSQL_USER: youruser
-      MYSQL_PASSWORD: yourpassword
     volumes:
       - mariadb-data:/var/lib/mysql
 
