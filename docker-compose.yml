@@ -8,31 +8,40 @@ x-env: &env
     MYSQL_PASSWORD: yourpassword
 
 services:
-  fastify-server-1:
-    <<: *env
-    build: ./fastify-server-1
-    ports:
-      - "3000:3000"
-
-  fastify-server-2:
-    build: ./fastify-server-2
-    ports:
-      - "3001:3001"
-
-  nginx:
-    build: ./nginx
-    ports:
-      - "80:80"
-    depends_on:
-      - fastify-server-1
-      - fastify-server-2
-
   mariadb:
     <<: *env
     image: mariadb
     restart: always
     volumes:
       - mariadb-data:/var/lib/mysql
+
+
+  fastify-server-1:
+    <<: *env
+    build: ./fastify-server-1
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mariadb
+
+  fastify-server-2:
+    build: ./fastify-server-2
+    restart: always
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mariadb
+
+  nginx:
+    build: ./nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "8080:8080"
+    depends_on:
+      - fastify-server-1
+      - fastify-server-2
 
   # mariadb-maxscale:
   #   build: ./maxscale
@@ -44,6 +53,44 @@ services:
   #   volumes:
   #     - maxscale-data:/var/lib/maxscale
 
+  prometheus:
+    build: ./prometheus
+    ports:
+      - "9090:9090"
+    depends_on:
+      - nginx
+    volumes:
+      - prometheus-data:/prometheus
+      # - /etc/prometheus:/config
+
+  nginx-prometheus-exporter:
+      image: nginx/nginx-prometheus-exporter:1.0
+      container_name: prometheus-nginx-exporter
+      restart: always
+      env_file:
+        .env
+      command:
+        - --nginx.scrape-uri=http://nginx:8080/nginx_status
+        
+      ports:
+      - "9113:9113"
+      depends_on:
+        - prometheus
+
+
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3002:3000"
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+    
 volumes:
   mariadb-data:
+  grafana-data:
+  prometheus-data:
   # maxscale-data:
