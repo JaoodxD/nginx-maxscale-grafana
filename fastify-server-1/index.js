@@ -1,4 +1,6 @@
 const Fastify = require('fastify')
+const metricsPlugin = require('fastify-metrics')
+
 const mysql = require('mysql2/promise')
 
 const host = process.env.host || '0.0.0.0'
@@ -7,6 +9,7 @@ const MYSQL_USER = process.env.MYSQL_USER
 const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD
 
 const app = Fastify()
+app.register(metricsPlugin, { endpoint: '/metrics' })
 
 start()
 
