@@ -13,7 +13,7 @@ app.register(metricsPlugin, { endpoint: '/metrics' })
 
 start()
 
-async function start() {
+async function start () {
   const conn = await mysql.createConnection({
     host: 'mariadb',
     user: MYSQL_USER,
@@ -24,11 +24,10 @@ async function start() {
   const [result] = await conn.query('SELECT 1 + 2 AS TOTAL')
   console.log('test mariadb response:', result)
 
-  app.get('/', async(req, res) => {
+  app.get('/', async (req, res) => {
     console.log(`handling request on port ${port}`)
     const [result] = await conn.query('SELECT 1 + 2 AS TOTAL')
     return result
-    // res.send({ hello: 'world' })
   })
   try {
     await app.listen({ host, port })

@@ -14,7 +14,7 @@ app.get('/', async (req, res) => {
     console.error(error)
   }
   console.log(`handling request on port ${port}`)
-  res.send({ hello: 'world', data })
+  return { hello: 'world', data }
 })
 
 start()
