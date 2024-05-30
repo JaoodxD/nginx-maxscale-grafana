@@ -12,6 +12,6 @@
   "dependencies": {
     "fastify": "^4.26.2",
     "fastify-metrics": "^11.0.0",
-    "mysql2": "^3.9.7"
+    "mysql2": "^3.9.8"
   }
 }
