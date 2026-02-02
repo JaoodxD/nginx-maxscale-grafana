@@ -10,6 +10,6 @@
   "author": "Maksym Shenderuk <jaood96@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "fastify": "^4.26.2"
+    "fastify": "^5.7.3"
   }
 }
